@@ -17,11 +17,24 @@ products = [
     Product(id= 4, name= "table", description= "best table", price= 100, quantity= 20)
 ]
 
+# now i want to add fresh data into my database . 
+def init_db():
+    db = sessionLocal()
+
+    # Note : i only want to initialise when my database is completely empty
+    count = db.query(database_models.Product).count
+    if count == 0:
+
+        for product in products:
+            db.add(database_models.Product(**product.model_dump()))  # model dump gives you a dictionary
+        db.commit()
+init_db( )
+
 @app.get("/products")
 def get_all_products():
 
-    db = sessionLocal()
-    db.query()
+    # db = sessionLocal()
+    # db.query()
     return products
 
 @app.get("/product/{id}")
