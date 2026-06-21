@@ -1,2 +1,5 @@
 fastapi
 uvicorn
+sqlalchemy # orm
+psycopg2 # sql driver for postgres
+python-dotenv
