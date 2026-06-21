@@ -1,7 +1,8 @@
-from fastapi import FastAPI # import from library
+from fastapi import Depends, FastAPI # import from library
 from models import Product
 from database import sessionLocal, engine
 import database_models
+from sqlalchemy.orm import Session
 app = FastAPI()  #create an object
 
 database_models.Base.metadata.create_all(bind = engine)
@@ -16,6 +17,13 @@ products = [
     Product(id= 3, name= "pen", description= "budget pen", price= 9, quantity= 100),
     Product(id= 4, name= "table", description= "best table", price= 100, quantity= 20)
 ]
+# if anyone wants to use the db he will just inject this method and use the db 
+def get_db():
+    db = sessionLocal() # to create the connection once
+    try:
+        yield db # the connection will be closed after you are done with what you wanted to do with the db
+    finally:
+        db.close() # to close the connection
 
 # now i want to add fresh data into my database . 
 def init_db():
@@ -31,19 +39,20 @@ def init_db():
 init_db( )
 
 @app.get("/products")
-def get_all_products():
+def get_all_products(db: Session = Depends(get_db)): #means db of type Session depends upon get_db method.
 
-    # db = sessionLocal()
-    # db.query()
-    return products
+    # now we can use the db directly since we have injected it into get_all_products.
+    db_products = db.query(database_models.Product).all()
+    return db_products
 
 @app.get("/product/{id}")
-def get_products_by_id(id:int):
-    for product in products:
-        if product.id == id:
-            return product
-        
-
+def get_products_by_id(id:int, db: Session = Depends(get_db)):
+    # for product in products:
+    #     if product.id == id:
+    #         return product
+    db_product = db.query(database_models.Product).filter(database_models.Product.id == id).first()
+    if db_product:
+        return db_product      
     return "product not found"
 
 
