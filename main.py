@@ -8,8 +8,10 @@ def greet():
     return "Hello World"
 
 products = [
-    Product(1, "Phone", "budget phone", 99, 10),
-    Product(2, "Laptop", "budget laptop", 999, 6)
+    Product(id= 1, name= "Phone", description= "budget phone", price= 99, quantity= 10),
+    Product(id= 2, name= "laptop", description= "laptop", price= 999, quantity= 20),
+    Product(id= 3, name= "pen", description= "budget pen", price= 9, quantity= 100),
+    Product(id= 4, name= "table", description= "best table", price= 100, quantity= 20)
 ]
 
 @app.get("/products")
