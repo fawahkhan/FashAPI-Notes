@@ -1,6 +1,6 @@
 # FastAPI Product Management System
 
-A simple yet powerful FastAPI application demonstrating CRUD operations (GET, POST, PUT, DELETE) for product management and inventory tracking with a PostgreSQL database connection.
+A simple yet powerful FastAPI application demonstrating CRUD operations (GET, POST, PUT, DELETE) for product management and inventory tracking with a PostgreSQL database connection. Go to /docs to access swagger to test the api's.
 
 ## Features
 
